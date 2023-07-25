@@ -1,0 +1,69 @@
+"""
+projekt_2.py: druhý projekt do Engeto Online Python Akademie
+
+autor: Lucie Ihnatoliová
+email: lih48279@gmail.com
+discord: Lucie I#2395
+
+"""
+import random
+pretty_line = "=" * 60
+
+#generuj nahodne ctyrciferne cislo
+def gen_sec_num():
+    digits = "0123456789"
+    sec_num = "".join(random.sample(digits, 4))
+    return sec_num
+
+#pocitani bulls a cows
+def bulls_cows(sec_num, guess_num):
+    bulls, cows = 0, 0
+    for x in range(len(sec_num)):
+        if guess_num[x] == sec_num[x]:
+            bulls += 1
+        elif guess_num[x] in sec_num:
+            cows += 1
+    return bulls, cows
+
+#spravny input - ctyrciferne cislo
+def correct_input(guess_num):
+    if not guess_num.isdigit():
+        return False
+    if len(guess_num) != 4:
+        return False
+    return True
+    
+print("Welcome to Bulls and Cows!")
+print(pretty_line)
+print("You need to guess a randomly generated 4 digit number.")
+print("Number of bulls shows correct digit in a correct position.")
+print("Number of cows shows correct digit in a wrong position.")
+print(pretty_line)
+print("Let's play!")
+print(pretty_line)
+print("Enter a number:")
+print(pretty_line)
+
+sec_num = gen_sec_num()
+#print(sec_num)
+guesses = 0
+
+#hra
+while True:
+    guess_num = str(input(">>>"))
+    if not correct_input(guess_num):
+        print("Invalid input. Please enter a 4 digit number.")
+        continue
+    
+    guesses += 1    
+    bulls, cows = bulls_cows(sec_num, guess_num)
+    if bulls == 1 or cows == 1:
+        print(f"{bulls} bull, {cows} cow")
+    else:
+        print(f"{bulls} bulls, {cows} cows")
+    print(pretty_line)
+    if bulls == 4:
+        print(f"Congratulation! You've guessed the right number: {sec_num}")
+        print(f"The number of guesses is: {guesses}")
+        break
+
