@@ -11,8 +11,14 @@ pretty_line = "=" * 60
 
 #generuj nahodne ctyrciferne cislo
 def gen_sec_num():
-    digits = "0123456789"
-    sec_num = "".join(random.sample(digits, 4))
+    digits = "1234567890"  
+    digits_list = list(digits)
+    random.shuffle(digits_list)
+    # pokud by prvni cislice byla nula
+    if digits_list[0] == '0':
+        index = random.randint(1, 9)
+        digits_list[0], digits_list[index] = digits_list[index], digits_list[0]
+    sec_num = "".join(digits_list[:4])
     return sec_num
 
 #pocitani bulls a cows
@@ -31,11 +37,16 @@ def correct_input(guess_num):
         return False
     if len(guess_num) != 4:
         return False
+    if guess_num[0] == "0":
+        return False
+    if len(set(guess_num)) != 4:
+        return False
     return True
     
 print("Welcome to Bulls and Cows!")
 print(pretty_line)
 print("You need to guess a randomly generated 4 digit number.")
+print("The number never starts with 0 and all the digits are unique.")
 print("Number of bulls shows correct digit in a correct position.")
 print("Number of cows shows correct digit in a wrong position.")
 print(pretty_line)
@@ -52,7 +63,7 @@ guesses = 0
 while True:
     guess_num = str(input(">>>"))
     if not correct_input(guess_num):
-        print("Invalid input. Please enter a 4 digit number.")
+        print("Invalid input. Please enter a 4 unique digit number.")
         continue
     
     guesses += 1    
@@ -65,5 +76,11 @@ while True:
     if bulls == 4:
         print(f"Congratulation! You've guessed the right number: {sec_num}")
         print(f"The number of guesses is: {guesses}")
+        if guesses <= 3:
+            print("That's amazing!")
+        elif 4 <= guesses <= 6:
+            print("Not bad!")
+        elif 7 <= guesses:
+            print("Loser!")
         break
 
